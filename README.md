@@ -1,1 +1,3 @@
-# squirrel_prediction
+# squirrel_prediction repository
+
+scipy
