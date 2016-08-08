@@ -5,7 +5,7 @@ Repository for prediction and learning related SQUIRREL packages.
 
 Installation requiremets
 ```
-sudo apt-get install scipy
+rosdep install --from-path squirrel_prediction -i -y
 ```
 
 Service call for relations prediction:
