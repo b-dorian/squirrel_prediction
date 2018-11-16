@@ -8,8 +8,6 @@ Installation requiremets
 rosdep install --from-path squirrel_prediction -i -y
 ```
 
-You need to install a repository containing squirrel messages: [squirrel_common](https://github.com/squirrel_project/squirrel_common)
-
 Running service for predictions
 ==================================
 After installation of the repository you can run the service for predictions as:

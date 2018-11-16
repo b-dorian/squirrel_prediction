@@ -1,0 +1,15 @@
+# input
+# path of the file containing table
+# name of files
+string data_path 
+string input_file
+# number of predicates
+int32 number_of_columns
+# location of value of interest
+Int32 column
+Int32 row
+---
+#output
+bool finished
+Int32[] rows
+Int32[] columns
