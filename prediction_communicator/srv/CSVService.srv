@@ -1,0 +1,6 @@
+# request a problem to be generated in the csv_path
+string csv_path
+bool csv_string_response
+---
+bool csv_generated
+string csv_string
