@@ -8,14 +8,13 @@
 	<arg name="domain_path" value="$(find prediction_communicator)/common/domain_PDDLtoCSV.pddl"/>
 	<arg name="problem_path" value="$(find prediction_communicator)/common/problem_PDDLtoCSV.pddl"/>
 
-	<arg name="knowledge_base"   default="rosplan_knowledge_base" />
 
 	<!-- scene database (MongoDB) -->
 	<include file="$(find mongodb_store)/launch/mongodb_store.launch">
 		<arg name="db_path" value="$(find rosplan_knowledge_base)/common/mongoDB/"/>
 	</include>
 
-	<!-- knowledge base -->
+	<!-- rosplan knowledge base -->
 	<node name="rosplan_knowledge_base" pkg="rosplan_knowledge_base" type="knowledgeBase" respawn="false" output="screen">
 		<param name="domain_path" value="$(arg domain_path)" />
 		<param name="problem_path" value="$(arg problem_path)" />
@@ -24,13 +23,23 @@
 		<param name="use_unknowns" value="false" />
 	</node>
 
+	<!-- prediction knowledge base -->
+    	<node name="prediction_knowledge_base" pkg="rosplan_knowledge_base" type="knowledgeBase" respawn="false" output="screen">
+    		<param name="domain_path" value="$(arg domain_path)" />
+    		<param name="problem_path" value="$(arg problem_path)" />
+    		<param name="database_path" value="$(find rosplan_knowledge_base)/common/mongcoDB/" />
+    		<!-- conditional planning flags -->
+    		<param name="use_unknowns" value="false" />
+    	</node>
 
 
-	<!-- csv generation -->
+	<!-- prediction communicator -->
 	<node name="prediction_communicator_interface" pkg="prediction_communicator" type="communicatorInterface" respawn="false" output="screen">
-		<param name="knowledge_base" value="$(arg knowledge_base)" />
+		<param name="generator_knowledge_base" value="rosplan_knowledge_base" />
+		<param name="importer_knowledge_base" value="prediction_knowledge_base" />
 		<param name="domain_path"    value="$(arg domain_path)" />
-		<param name="csv_path"   value="$(find prediction_communicator)/common/problem_PDDLtoCSV.csv" />
+		<param name="csv_export_path"   value="$(find prediction_communicator)/common/problem_PDDLtoCSV.csv" />
+		<param name="csv_import_path"   value="$(find prediction_communicator)/common/output.csv" />
 		<param name="communicator_topic"  value="communicator_instance" />
 	</node>
 

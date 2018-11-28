@@ -1,6 +1,7 @@
 #include "ros/ros.h"
 
 #include "CSVStateGenerator.h"
+#include "CSVStateImporter.h"
 
 #include "std_msgs/String.h"
 #include "std_srvs/Empty.h"
@@ -23,19 +24,21 @@ namespace KCL_rosplan {
         ros::NodeHandle* node_handle;
 
         /* params */
-        std::string csv_path;
+        std::string csv_import_path;
+        std::string csv_export_path;
         std::string csv_name;
 
-        CSVStateGenerator csv_generator;
+
+        CSVStateGenerator csv_state_generator;
+        CSVStateImporter csv_state_importer;
 
     public:
 
         CommunicatorInterface(ros::NodeHandle& nh);
         virtual ~CommunicatorInterface();
 
-        bool runCommunicatorServer(std::string csvPath);
-        bool runCommunicatorServerDefault(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
-        bool runCommunicatorServerParams(prediction_communicator::CSVService::Request &req, prediction_communicator::CSVService::Response &res);
+        bool runCSVStateGeneratorServer(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res);
+        bool runCSVStateImporterServer(prediction_communicator::CSVService::Request &req, prediction_communicator::CSVService::Response &res);
 
         /* ROS interface */
         ros::Publisher communicator_publisher;

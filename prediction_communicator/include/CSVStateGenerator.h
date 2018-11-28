@@ -11,12 +11,11 @@
 #include <string>
 #include <math.h>
 
-#include "rosplan_knowledge_msgs/GetDomainNameService.h"
 #include "rosplan_knowledge_msgs/GetDomainTypeService.h"
 #include "rosplan_knowledge_msgs/GetDomainAttributeService.h"
 #include "rosplan_knowledge_msgs/GetInstanceService.h"
 #include "rosplan_knowledge_msgs/GetAttributeService.h"
-#include "rosplan_knowledge_msgs/GetMetricService.h"
+
 
 #ifndef KCL_CSVStateGenerator
 #define KCL_CSVStateGenerator

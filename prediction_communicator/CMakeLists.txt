@@ -65,7 +65,7 @@ find_package(GLUT REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS})
 
 ## Declare cpp executables
-add_executable(communicatorInterface src/CommunicatorInterface.cpp src/CSVStateGenerator.cpp)
+add_executable(communicatorInterface src/CommunicatorInterface.cpp src/CSVStateGenerator.cpp src/CSVStateImporter.cpp)
 
 
 ## Add dependencies
