@@ -1,6 +1,6 @@
 #include "ros/ros.h"
 
-#include "CSVGenerator.h"
+#include "CSVStateGenerator.h"
 
 #include "std_msgs/String.h"
 #include "std_srvs/Empty.h"
@@ -13,6 +13,7 @@
 /**
  * This file contains an interface to the communicator.
  */
+
 namespace KCL_rosplan {
 
     class CommunicatorInterface
@@ -25,7 +26,7 @@ namespace KCL_rosplan {
         std::string csv_path;
         std::string csv_name;
 
-        CSVGenerator csv_generator;
+        CSVStateGenerator csv_generator;
 
     public:
 

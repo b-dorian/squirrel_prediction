@@ -1,7 +1,7 @@
 
-#include <CSVGenerator.h>
+#include <CSVStateGenerator.h>
 
-#include "CSVGenerator.h"
+#include "CSVStateGenerator.h"
 
 namespace KCL_rosplan {
 
@@ -9,7 +9,7 @@ namespace KCL_rosplan {
 	 * export propositions to a CSV file
 	 * This file is later read by predictor.
 	 */
-    void CSVGenerator::generateCSVFile(std::string &csvPath) {
+    void CSVStateGenerator::generateCSVFile(std::string &csvPath) {
 
         std::stringstream ss;
 
@@ -32,6 +32,12 @@ namespace KCL_rosplan {
         std::ofstream pFile;
         pFile.open((csvPath).c_str());
 
+        //clear internal data
+        instances.clear();
+        instances_types.clear();
+        instances_super_types.clear();
+        types.clear();
+        super_types.clear();
 
         // setup service calls
         ros::NodeHandle nh;
@@ -48,11 +54,14 @@ namespace KCL_rosplan {
         makePredicateNames(pFile, getDomainPropsClient);
         makeInstanceCombinations(getTypesClient,getInstancesClient);
         makeFacts(pFile, getDomainPropsClient, getPropsClient);
+        pFile.close();
+
+
 
     }
 
     // get the parent of a type (it is mandatory every type in the PDDL domain has a super-type defined, with "object" being the root of the type tree)
-    std::string CSVGenerator::getTypeParent(std::string child){
+    std::string CSVStateGenerator::getTypeParent(std::string child){
         std::string parent = child;
         for(size_t t=0; t<super_types.size(); t++) {
             if (child == types[t]) parent = super_types[t];
@@ -62,7 +71,7 @@ namespace KCL_rosplan {
 
 
     // check if two types are part of the same branch of the type tree
-    bool CSVGenerator::areTypesRelated(std::string possibleParent, std::string possibleChild) {
+    bool CSVStateGenerator::areTypesRelated(std::string possibleParent, std::string possibleChild) {
         bool typesRelated = false;
         std::string tempChild = possibleChild;
         if (possibleChild != possibleParent) {
@@ -78,10 +87,10 @@ namespace KCL_rosplan {
     }
 
     //write label row
-    void CSVGenerator::makePredicateNames(std::ofstream &pFile, ros::ServiceClient getDomainPropsClient){
+    void CSVStateGenerator::makePredicateNames(std::ofstream &pFile, ros::ServiceClient getDomainPropsClient){
         rosplan_knowledge_msgs::GetDomainAttributeService domainAttrSrv;
         if (!getDomainPropsClient.call(domainAttrSrv)) {
-            ROS_ERROR("KCL: (CSVGenerator) Failed to call service %s", domain_predicate_service.c_str());
+            ROS_ERROR("KCL: (CSVStateGenerator) Failed to call service %s", domain_predicate_service.c_str());
         } else {
 
             std::vector<rosplan_knowledge_msgs::DomainFormula>::iterator ait = domainAttrSrv.response.items.begin();
@@ -93,7 +102,7 @@ namespace KCL_rosplan {
     }
 
     //write instance combinations and gather associated types informations
-    void CSVGenerator::makeInstanceCombinations(ros::ServiceClient getTypesClient, ros::ServiceClient getInstancesClient){
+    void CSVStateGenerator::makeInstanceCombinations(ros::ServiceClient getTypesClient, ros::ServiceClient getInstancesClient){
         rosplan_knowledge_msgs::GetDomainTypeService typeSrv;
         if (!getTypesClient.call(typeSrv)) {
             ROS_ERROR("KCL: (PDDLProblemGenerator) Failed to call service %s", domain_type_service.c_str());
@@ -122,7 +131,7 @@ namespace KCL_rosplan {
     }
 
     //write predicates vs propositions evaluation
-    void CSVGenerator::makeFacts(std::ofstream &pFile, ros::ServiceClient getDomainPropsClient, ros::ServiceClient getPropsClient){
+    void CSVStateGenerator::makeFacts(std::ofstream &pFile, ros::ServiceClient getDomainPropsClient, ros::ServiceClient getPropsClient){
         rosplan_knowledge_msgs::GetDomainAttributeService domainAttrSrv;
         for(size_t i=0; i<instances.size(); i++) {
             for(size_t j=0; j<instances.size(); j++) {
@@ -130,7 +139,7 @@ namespace KCL_rosplan {
                 pFile << "'" + instances[i] + "','" + instances[j] + "'";
 
                 if (!getDomainPropsClient.call(domainAttrSrv)) {
-                    ROS_ERROR("KCL: (CSVGenerator) Failed to call service %s", domain_predicate_service.c_str());
+                    ROS_ERROR("KCL: (CSVStateGenerator) Failed to call service %s", domain_predicate_service.c_str());
                 } else {
 
                     std::vector<rosplan_knowledge_msgs::DomainFormula>::iterator ait = domainAttrSrv.response.items.begin();

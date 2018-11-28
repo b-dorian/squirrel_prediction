@@ -18,12 +18,12 @@
 #include "rosplan_knowledge_msgs/GetAttributeService.h"
 #include "rosplan_knowledge_msgs/GetMetricService.h"
 
-#ifndef KCL_CSVGenerator
-#define KCL_CSVGenerator
+#ifndef KCL_CSVStateGenerator
+#define KCL_CSVStateGenerator
 
 namespace KCL_rosplan {
 
-    class CSVGenerator {
+    class CSVStateGenerator {
     private:
         std::vector<std::string> instances;
         std::vector<std::string> instances_types;
