@@ -1,0 +1,3 @@
+# select the Knowledge Base from which to generate information
+bool csv_generator_core_knowledge_base
+---

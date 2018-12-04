@@ -18,11 +18,12 @@ namespace KCL_rosplan {
 
         // connecting to KB
         std::string kbG = "knowledge_base";
-        node_handle->getParam("generator_knowledge_base", kbG);
-        csv_state_generator.knowledge_base = kbG;
-
+        node_handle->getParam("core_knowledge_base", kbG);
         std::string kbI = "knowledge_base";
-        node_handle->getParam("importer_knowledge_base", kbI);
+        node_handle->getParam("prediction_knowledge_base", kbI);
+
+        csv_state_generator.core_knowledge_base = kbG;
+        csv_state_generator.prediction_knowledge_base = kbI;
         csv_state_importer.knowledge_base = kbI;
 
         // publishing generated csv
@@ -44,7 +45,7 @@ namespace KCL_rosplan {
      * problem generation service method (1)
      * loads parameters from param server
      */
-    bool CommunicatorInterface::runCSVStateGeneratorServer(std_srvs::Empty::Request &req, std_srvs::Empty::Response &res) {
+    bool CommunicatorInterface::runCSVStateGeneratorServer(prediction_communicator::CSVGeneratorService::Request &req, prediction_communicator::CSVGeneratorService::Response &res) {
 
         // defaults
         csv_export_path = "common/problem.csv";
@@ -52,7 +53,7 @@ namespace KCL_rosplan {
         // load params
         node_handle->getParam("csv_export_path", csv_export_path);
 
-        // set problem name for ROS_INFO
+        // set name for ROS_INFO
         std::size_t lastDivide = csv_export_path.find_last_of("/\\");
         if(lastDivide != std::string::npos) {
             csv_name = csv_export_path.substr(lastDivide+1);
@@ -61,7 +62,7 @@ namespace KCL_rosplan {
         }
 
         ROS_INFO("KCL: (%s) (%s) Exporting state to CSV.", ros::this_node::getName().c_str(), csv_name.c_str());
-        csv_state_generator.generateCSVFile(csv_export_path);
+        csv_state_generator.generateCSVFile(csv_export_path, req.csv_generator_core_knowledge_base);
         ROS_INFO("KCL: (%s) (%s) State was exported.", ros::this_node::getName().c_str(), csv_name.c_str());
 
         // publish problem
@@ -76,7 +77,7 @@ namespace KCL_rosplan {
     }
 
 
-    bool CommunicatorInterface::runCSVStateImporterServer(prediction_communicator::CSVService::Request &req, prediction_communicator::CSVService::Response &res) {
+    bool CommunicatorInterface::runCSVStateImporterServer(prediction_communicator::CSVImporterService::Request &req, prediction_communicator::CSVImporterService::Response &res) {
 
         // defaults
         csv_import_path = "common/problem.csv";
@@ -85,7 +86,7 @@ namespace KCL_rosplan {
         node_handle->getParam("csv_import_path", csv_import_path);
 
 
-        // set problem name for ROS_INFO
+        // set name for ROS_INFO
         std::size_t lastDivide = csv_import_path.find_last_of("/\\");
         if(lastDivide != std::string::npos) {
             csv_name = csv_import_path.substr(lastDivide+1);

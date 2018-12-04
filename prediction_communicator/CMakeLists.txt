@@ -27,7 +27,8 @@ add_compile_options(-std=c++11)
 
 add_service_files(
         FILES
-        CSVService.srv
+        CSVImporterService.srv
+        CSVGeneratorService.srv
 )
 
 ## Generate added messages and services with any dependencies listed here

@@ -43,9 +43,11 @@ namespace KCL_rosplan {
         void makeFacts(std::ofstream &pFile, ros::ServiceClient getDomainPropsClient, ros::ServiceClient getPropsClient);
 
     public:
-        std::string knowledge_base;
+        std::string used_knowledge_base;
+        std::string core_knowledge_base;
+        std::string prediction_knowledge_base;
 
-        void generateCSVFile(std::string &csvPath);
+        void generateCSVFile(std::string &csvPath, bool core);
     };
 } // close namespace
 

@@ -35,8 +35,8 @@
 
 	<!-- prediction communicator -->
 	<node name="prediction_communicator_interface" pkg="prediction_communicator" type="communicatorInterface" respawn="false" output="screen">
-		<param name="generator_knowledge_base" value="rosplan_knowledge_base" />
-		<param name="importer_knowledge_base" value="prediction_knowledge_base" />
+		<param name="core_knowledge_base" value="rosplan_knowledge_base" />
+		<param name="prediction_knowledge_base" value="prediction_knowledge_base" />
 		<param name="domain_path"    value="$(arg domain_path)" />
 		<param name="csv_export_path"   value="$(find prediction_communicator)/common/problem_PDDLtoCSV.csv" />
 		<param name="csv_import_path"   value="$(find prediction_communicator)/common/output.csv" />

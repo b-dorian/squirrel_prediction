@@ -9,23 +9,28 @@ namespace KCL_rosplan {
 	 * export propositions to a CSV file
 	 * This file is later read by predictor.
 	 */
-    void CSVStateGenerator::generateCSVFile(std::string &csvPath) {
+    void CSVStateGenerator::generateCSVFile(std::string &csvPath, bool core) {
+
+        if (core) used_knowledge_base = core_knowledge_base;
+        else used_knowledge_base = prediction_knowledge_base;
 
         std::stringstream ss;
 
-        ss << "/" << knowledge_base << "/domain/types";
+        std::cout << used_knowledge_base << "\n";
+
+        ss << "/" << used_knowledge_base << "/domain/types";
         domain_type_service = ss.str();
         ss.str("");
 
-        ss << "/" << knowledge_base << "/domain/predicates";
+        ss << "/" << used_knowledge_base << "/domain/predicates";
         domain_predicate_service = ss.str();
         ss.str("");
 
-        ss << "/" << knowledge_base << "/state/instances";
+        ss << "/" << used_knowledge_base << "/state/instances";
         state_instance_service = ss.str();
         ss.str("");
 
-        ss << "/" << knowledge_base << "/state/propositions";
+        ss << "/" << used_knowledge_base << "/state/propositions";
         state_proposition_service = ss.str();
         ss.str("");
 
