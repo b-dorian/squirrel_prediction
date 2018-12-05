@@ -149,7 +149,7 @@ namespace KCL_rosplan {
 
                     std::vector<rosplan_knowledge_msgs::DomainFormula>::iterator ait = domainAttrSrv.response.items.begin();
                     for (; ait != domainAttrSrv.response.items.end(); ait++) {
-                        std:: string output = ",";
+                        std:: string output = ",0";
 
                         rosplan_knowledge_msgs::GetAttributeService attrSrv;
 
@@ -172,7 +172,7 @@ namespace KCL_rosplan {
                                     else{
                                         if (notFound == true)
                                         {
-                                            output = ",0";
+                                            output = ",";
                                         }
                                     }
                                 }

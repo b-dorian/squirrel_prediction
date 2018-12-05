@@ -62,23 +62,16 @@ namespace KCL_rosplan {
 
         for (size_t t = 2; t < (predNumber + 2); t++) {
 
-            if (std::stof (separatedLine[t+predNumber]) >= threshold){
-                updateProposition(separatedLine[0].substr(1, separatedLine[0].size() -2),separatedLine[1].substr(1, separatedLine[1].size() -2),t-2,stoi(separatedLine[t]));
+            if ((std::stof (separatedLine[t+predNumber]) >= threshold) && (separatedLine[t] == "1")){
+                std::cout << stoi(separatedLine[t]) << "\n";
+                updateProposition(separatedLine[0].substr(1, separatedLine[0].size() -2),separatedLine[1].substr(1, separatedLine[1].size() -2),t-2);
             }
 
         }
     }
 
-    // update propostion
-    // Note !!! doublecheck logic for adding 0 predicates
-    // positive (1) definietly add
-    // negative (0) add as isNegative = true or do not add at all?
-
-    // Propositions which do not have a domain equivalent should be imported? ( ex: in dorian dorian) - currently true
-    // Can be used for domain modification?
-
     // allow addition to kb of
-    void CSVStateImporter::updateProposition(std::string object1 , std::string object2, int predicateNumber, int positive){
+    void CSVStateImporter::updateProposition(std::string object1 , std::string object2, int predicateNumber){
 
         // setup service calls
         ros::NodeHandle nh;
@@ -109,6 +102,8 @@ namespace KCL_rosplan {
                     param.value = object2;
                     prop.values.push_back(param);
 
+                    std::cout << object1 << " " << object2 <<"\n";
+
                     rosplan_knowledge_msgs::KnowledgeUpdateService updateService;
                     updateService.request.update_type = 0;
                     updateService.request.knowledge = prop;
@@ -117,6 +112,7 @@ namespace KCL_rosplan {
                     } else{
                         ROS_INFO("KCL: (%s) (%s) (%s) Proposition was imported.", ait->name.c_str(), object1.c_str(), object2.c_str());
                     }
+                    break;
                     ;
                 }
                 else{

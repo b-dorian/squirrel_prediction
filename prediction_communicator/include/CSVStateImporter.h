@@ -42,7 +42,7 @@ namespace KCL_rosplan {
 
         void parseCSVFile(std::ifstream &str);
         void checkThresholdandUpdate(std::vector<std::string> separatedLine);
-        void updateProposition(std::string object1, std::string object2, int predicateNumber, int positive);
+        void updateProposition(std::string object1, std::string object2, int predicateNumber);
 
     public:
         std::string knowledge_base;
